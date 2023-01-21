@@ -3,6 +3,10 @@ the patch classifier in a sliding window fashion and
 get the heatmaps (saliency maps)'''
 
 import numpy as np 
+import torch
+from torchvision import models
+import torch.nn as nn
+
 
 
 def add_img_margins(img, margin_size):
