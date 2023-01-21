@@ -138,7 +138,7 @@ def train_model(model, dataloaders, criterion, stages):
     return model, val_acc_history
   
 
-def test(trained_model,test_loader,batch_size,device,loss_fn)
+def test(trained_model,test_loader,batch_size,device,loss_fn):
 
     test_loss = 0.0
     class_correct = list(0. for i in range(5))
