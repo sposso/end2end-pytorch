@@ -1,4 +1,8 @@
-
+import torch.nn as nn
+from torchvision import models
+import torch
+import os
+from whole_classifier_model import Bottleneck,Resnet50
 
 def initialize_data_loader(batch_size,workers,root,aug = False) -> Tuple[DataLoader, DataLoader, DataLoader]:
 
@@ -26,22 +30,11 @@ def initialize_data_loader(batch_size,workers,root,aug = False) -> Tuple[DataLoa
     #Normalizing the test set
     test_dataset = CBIS_MAMMOGRAM(test, transform = T.Compose([T.ToTensor(),normalize]))
 
-     # Restricts data loading to a subset of the dataset exclusive to the current process
-    train_sampler = ElasticDistributedSampler(train_dataset)
+  
+    train_loader = DataLoader(train_dataset, batch_size= batch_size, sampler = sampler,num_workers = 8 )
+    val_loader = DataLoader(validation_dataset, batch_size = batch_size)
+    test_loader = DataLoader(test_dataset, batch_size = batch_size) 
 
-    train_loader = torch.utils.data.DataLoader(
-        train_dataset, batch_size=batch_size, shuffle=False,
-        num_workers=workers, pin_memory=True, sampler=train_sampler)
-
-    val_loader = torch.utils.data.DataLoader(
-        validation_dataset,
-        batch_size=batch_size, shuffle=False,
-        num_workers=workers, pin_memory=True)
-
-    test_loader = torch.utils.data.DataLoader(
-        test_dataset,
-        batch_size=batch_size, shuffle=False,
-        num_workers=workers, pin_memory=True)
 
 
     return train_loader,val_loader,test_loader
