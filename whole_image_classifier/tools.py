@@ -48,3 +48,25 @@ def Initialize_model(device_id,root):
     criterion = nn.CrossEntropyLoss().cuda(device_id)
 
     return model, criterion
+
+class CBIS_MAMMOGRAM(Dataset):
+    def __init__(self, csv_file, transform=None):
+        
+        self.annotations = pd.read_csv(csv_file)
+        self.transform = transform
+
+    def __len__(self):
+        return len(self.annotations)
+
+    def __getitem__(self, index):
+        img_path = self.annotations.iloc[index,0]
+        image = imread(img_path)*(1/65535)
+        image = np.stack([image, image, image])
+        #Shape expected by pytorch
+        image = np.moveaxis(image, 0, -1)
+        y_label = torch.tensor(int(self.annotations.iloc[index,2]))
+
+        if self.transform is not None:
+            image = self.transform(image)
+
+        return image, y_label
