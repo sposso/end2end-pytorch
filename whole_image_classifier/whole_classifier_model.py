@@ -51,6 +51,7 @@ def _make_layer(inplanes, block, planes, blocks, stride=1):
                       kernel_size=1, stride=stride, bias=False),
             nn.BatchNorm2d(planes * block.expansion),
         )
+        
 
     layers = []
     layers.append(block(inplanes, planes, stride, downsample))
