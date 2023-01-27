@@ -172,7 +172,7 @@ def test_function(model, best_model_wts,batch_size,num_classes,test_loader,loss_
         print('\nTest Accuracy (Overall): %2d%% (%2d/%2d)' % (
             100. * np.sum(class_correct) / np.sum(class_total),
             np.sum(class_correct), np.sum(class_total)))
-        
+         
         test_acc =  100. * np.sum(class_correct) / np.sum(class_total)
         
     y_pred = torch.vstack(predictions)
